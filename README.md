@@ -1,3 +1,3 @@
 # CPSC 449 Reddit-Microservices
 
-# Shane Spangenberg, Brendon Linthurst 
+# Shane Spangenberg, Brendon Linthurst, Collin Campbell
