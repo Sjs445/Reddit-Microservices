@@ -27,3 +27,8 @@ def home():
 <p>Welcome to the new reddit...</p>'''
 
 
+@app.route('/api/v1/resources/posts/all', methods=['GET'])
+def all_posts():
+    all_posts = queries.all_posts()
+    
+    return list(all_posts)
