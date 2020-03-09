@@ -1,2 +1,2 @@
 SELECT * FROM votes
-WHERE id = :id
+WHERE post_id = :id
