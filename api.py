@@ -47,13 +47,10 @@ def post(id):
     else:
         raise exceptions.NotFound()
 
-# GET and POST 
-@app.route('/api/v1/resources/posts', methods=['GET', 'POST'])
+# POST request for a new post
+@app.route('/api/v1/resources/posts', methods=['POST'])
 def posts():
-    if request.method == 'GET':
-       # return filter_posts(request.args)
-       return
-    elif request.method == 'POST':
+    if request.method == 'POST':
         return create_post(request.data)
 
 # create a post
