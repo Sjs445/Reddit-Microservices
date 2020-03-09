@@ -4,6 +4,7 @@ from flask import request
 from flask_api import status, exceptions
 import pugsql
 
+
 # Flask intance
 app = flask_api.FlaskAPI(__name__)
 app.config.from_envvar('APP_CONFIG')
@@ -71,3 +72,15 @@ def create_post(post):
     return post, status.HTTP_201_CREATED, {
         'Location': f'/api/v1/resources/posts/{post["id"]}'
     }
+
+# Get n most recent posts from all communities
+@app.route('/api/v1/resources/posts/recent/<int:number_of_posts>', methods=['GET'])
+def recent_posts(number_of_posts):
+    get_recent_posts_all = queries.get_recent_posts_all(number_of_posts=number_of_posts)
+    return list(get_recent_posts_all)
+
+# Get n most recent posts from specific community
+@app.route('/api/v1/resources/posts/recent/<string:sub>/<int:number_of_posts>', methods=['GET'])
+def recent_posts_sub(sub, number_of_posts):
+    get_recent_posts_sub = queries.get_recent_posts_sub(sub=sub, number_of_posts=number_of_posts)
+    return list(get_recent_posts_sub)
