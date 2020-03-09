@@ -1,3 +1,3 @@
 SELECT * FROM votes
-ORDER BY (up_votes - down_votes) DESC
+ORDER BY (upvotes - downvotes) DESC
 LIMIT :top_n
