@@ -32,18 +32,23 @@ def home():
 @app.route('/api/v1/resources/posts/all', methods=['GET'])
 def all_posts():
     all_posts = queries.all_posts()
-    
-    return list(all_posts)
+    return list(all_posts), status.HTTP_200_OK
 
 # Get post by id and delete post by id
 @app.route('/api/v1/resources/posts/<int:id>', methods=['GET', 'DELETE'])
 def post(id):
     if request.method == 'GET':
         post = queries.post_by_id(id=id)
-        return post
+        if(post):
+            return post, status.HTTP_200_OK
+        else:
+            raise exceptions.NotFound()
     elif request.method == 'DELETE':
-        queries.delete_post_by_id(id=id)
-        return {'message': f'Post deleted successfully'}, status.HTTP_200_OK 
+        post = queries.delete_post_by_id(id=id)
+        if(post):
+            return {'message': f'Post {id} deleted successfully'}, status.HTTP_200_OK
+        else:
+            raise exceptions.NotFound()
     else:
         raise exceptions.NotFound()
 
@@ -74,10 +79,17 @@ def create_post(post):
 @app.route('/api/v1/resources/posts/recent/<int:number_of_posts>', methods=['GET'])
 def recent_posts(number_of_posts):
     get_recent_posts_all = queries.get_recent_posts_all(number_of_posts=number_of_posts)
-    return list(get_recent_posts_all)
+    if(get_recent_posts_all):
+        return list(get_recent_posts_all)
+    else:
+        raise exceptions.NotFound()
+    
 
 # Get n most recent posts from specific community
 @app.route('/api/v1/resources/posts/recent/<string:sub>/<int:number_of_posts>', methods=['GET'])
 def recent_posts_sub(sub, number_of_posts):
     get_recent_posts_sub = queries.get_recent_posts_sub(sub=sub, number_of_posts=number_of_posts)
-    return list(get_recent_posts_sub)
+    if(get_recent_posts_sub):
+        return list(get_recent_posts_sub)
+    else:
+        raise exceptions.NotFound()
