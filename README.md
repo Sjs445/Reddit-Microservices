@@ -89,7 +89,7 @@ Retrieves all posts that have votes
 
 ### Vote up a post
 
-```/api/v1/resources/votes/upvote/<int:id>''' Method = GET, PUT
+```/api/v1/resources/votes/upvote/<int:id>```Method = GET, PUT
 
 curl -X PUT http://localhost:5000/api/v1/resources/votes/upvote/1
 
@@ -99,7 +99,7 @@ Increases the score of a post
 
 ```/api/v1/resources/votes/upvote/<int:id>''' Method = GET, PUT
 
-curl -X PUT http://localhost:5000/api/v1/resources/votes/upvote/2
+curl -X PUT http://localhost:5000/api/v1/resources/votes/downvote/2
 
 Reduces the score of a post
 
