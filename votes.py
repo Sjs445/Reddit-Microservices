@@ -12,7 +12,7 @@ queries = pugsql.module('queries/')
 queries.connect(app.config['DATABASE_URL'])
 
 # Initialize database
-@app.cli.command('initvote')
+@app.cli.command('init')
 def init_db():
     with app.app_context():
         db = queries._engine.raw_connection()
@@ -31,10 +31,10 @@ def vote_up(id):
     post = queries.post_by_id(id=id)
 
     if post:
-        queries.vote_up(post=id)
+        queries.up_vote(post=id)
         return { 'message': f' {id} upvoted successfully'}, status.HTTP_200_OK
     else:
-        return { 'error': f' Error 404 post {id} not found'}, status.HTTP_404_NOT_FOUND
+        return { 'message': f' Error 404 post {id} not found'}, status.HTTP_404_NOT_FOUND
 
 # Vote down a post
 @app.route('/api/v1/resources/votes/downvote/<int:id>', methods=['GET', 'POST'])
@@ -42,10 +42,10 @@ def vote_down(id):
     post = queries.post_by_id(id=id)
 
     if post:
-        queries.vote_down(post=id)
+        queries.down_vote(post=id)
         return { 'message': f' {id} voted down successfully'}, status.HTTP_200_OK
     else:
-        return {'error': f'Error 404 post {id} not found'}, status.HTTP_404_NOT_FOUND
+        return {'message': f'Error 404 post {id} not found'}, status.HTTP_404_NOT_FOUND
 
 # Retrieve the total number of votes for a post with a specific ID
 @app.route('/api/v1/resources/votes/<int:id>', methods=['GET'])
@@ -59,17 +59,26 @@ def report_number_of_votes(id):
 # List the n top scoring posts to any community
 @app.route('/api/v1/resources/votes/top/<int:top_n>', methods=['GET'])
 def top_n_score(top_n):
-    top = queries.top_n_by_score(top_n = top_n)
+    top = queries.top_n(top_n = top_n)
     if top:
         return list(top)
     else:
-        return {'error': f'Error 404 Resource Not Found'}, status.HTTP_404_NOT_FOUND
+        return {'message': f'Error 404 Resource Not Found'}, status.HTTP_404_NOT_FOUND
 
 # Return the list sorted by score
 @app.route('/api/v1/resources/votes/highscore', methods=['GET', 'POST'])
+def sorted_by_score():
+    idList = request.json['id']
+    sorted_list = queries.sorted_by_score(idList=idList)
+    if sorted_list:
+        return list(sorted_list)
+    else:
+       return { 'message': 'Error 404 Resource Not Found' }, status.HTTP_404_NOT_FOUND
+'''
 def sorted_by_score(id):
-    sorted = queries.sorted_by_score(id=id)
+    sorted = queries.sorted_by_score()
     if sorted:
         return list(sorted)
     else:
-        return {'error': f'Error 404 Resource Not Found'}, status.HTTP_404_NOT_FOUND
+        return {'message': f'Error 404 Resource Not Found'}, status.HTTP_404_NOT_FOUND
+'''

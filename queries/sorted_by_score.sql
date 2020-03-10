@@ -1,3 +1,3 @@
-SELECT * FROM votes
-WHERE id in :id
-ORDER BY (upvotes - downvotes) DESC
+-- :name sorted_by_score :many
+SELECT id, up_votes, down_votes FROM votes
+ORDER BY (up_votes - down_votes) DESC

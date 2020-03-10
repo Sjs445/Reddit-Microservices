@@ -1,2 +1,3 @@
+-- :name vote_by_id :one
 SELECT * FROM votes
-WHERE post_id = :id
+WHERE id = :id

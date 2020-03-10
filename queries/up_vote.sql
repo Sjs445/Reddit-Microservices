@@ -1,4 +1,5 @@
+-- :name up_vote :affected
 UPDATE votes
-SET upvotes = upvotes + 1,
-WHERE post=:post;
+SET up_votes = up_votes + 1,
+WHERE id = :id;
 

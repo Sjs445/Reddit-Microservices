@@ -1,3 +1,4 @@
+-- :name top_n :many
 SELECT * FROM votes
-ORDER BY (upvotes - downvotes) DESC
-LIMIT :top_n
+ORDER BY (up_votes - down_votes) DESC
+LIMIT :top_n;
