@@ -7,17 +7,17 @@
 ### Posts in Json Format
 
 ```json
-[
+{
     "id": "Number",
     "title": "Post Title",
     "body": "Body of Post",
     "user": "username",
     "sub": "sub community",
     "url": "www.example.com",
-    "up_votes": "Number"
-    "down_votes": "Number"
+    "up_votes": "Number",
+    "down_votes": "Number",
     "posted_time": "YYY-MM-DD HH:MM:SS"
-]
+}
 ```
 ## Homepage
 
@@ -47,7 +47,6 @@ First make the shell file executable by running ```chmod +x deletepost.sh```
 
 Then run the shell command like ```./deletepost.sh <:id>``` where <:id> is the id of the post you want to delete.
 
-Note that when we delete a post we also delete the same row from the votes table that references the same ID.
 
 ### Create a new post
 
@@ -59,7 +58,7 @@ First make the shell file executable by running```chmod +x newpost.sh```
 
 Then run the shell command like```./newpost.sh```
 
-After the post is created it should return```201 Created ```with the ID of the post that was created. If there is already a post with that same ID it will return```409 Conflict```. Note that when we create a post we insert into the votes table referencing the same ID as posts and initialize the votes to 0.
+After the post is created it should return```201 Created ```with the ID of the post that was created. If there is already a post with that same ID it will return```409 Conflict```. 
 
 ### Get n most recent posts from all communities
 
