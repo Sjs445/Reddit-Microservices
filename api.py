@@ -61,13 +61,15 @@ def posts():
 # create a post
 def create_post(post):
     posted_fields = {*post.keys()}
-    required_fields = {'id', 'title', 'body', 'sub', 'up_votes', 'down_votes', 'posted_time'}
+    required_fields = {'id', 'title', 'body', 'sub', 'posted_time'}
 
     if not required_fields <= posted_fields:
         message = f'Missing fields: {required_fields - posted_fields}'
         raise exceptions.ParseError(message)
     try:
         post['id'] = queries.create_post(**post)
+        queries.create_votes(**post)    # When we create a post we initialize votes in the Database 
+
     except Exception as e:
         return { 'error': str(e) }, status.HTTP_409_CONFLICT
 
