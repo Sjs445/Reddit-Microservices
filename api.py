@@ -45,8 +45,7 @@ def post(id):
             raise exceptions.NotFound()
     elif request.method == 'DELETE':
         post = queries.delete_post_by_id(id=id) # Delete the post in the database
-        votes = queries.delete_votes_by_id(id=id)   # We should delete the votes as well
-        if(post and votes):
+        if(post):
             return {'message': f'Post {id} deleted successfully'}, status.HTTP_200_OK
         else:
             raise exceptions.NotFound()
@@ -62,14 +61,13 @@ def posts():
 # create a post
 def create_post(post):
     posted_fields = {*post.keys()}
-    required_fields = {'id', 'title', 'body', 'sub', 'posted_time'}
+    required_fields = {'id', 'title', 'body', 'sub', 'up_votes', 'down_votes', 'posted_time'}
 
     if not required_fields <= posted_fields:
         message = f'Missing fields: {required_fields - posted_fields}'
         raise exceptions.ParseError(message)
     try:
         post['id'] = queries.create_post(**post)
-        queries.create_votes(**post)    # When we create a post we initialize votes in the Database 
 
     except Exception as e:
         return { 'error': str(e) }, status.HTTP_409_CONFLICT
@@ -96,3 +94,5 @@ def recent_posts_sub(sub, number_of_posts):
         return list(get_recent_posts_sub)
     else:
         raise exceptions.NotFound()
+
+
