@@ -80,3 +80,39 @@ Simply returns the most recent posts limited to size n from every community.
 ```/api/v1/resources/posts/recent/<string:sub>/<int:number_of_posts>``` Method = GET
 
 Simply returns the most recent posts limited to size n from a specified community.
+
+### Retrieve all posts with votes
+
+```/api/v1/resources/votes/all``` Method = GET
+
+Retrieves all posts that have votes
+
+### Vote up a post
+
+```/api/v1/resources/votes/upvote/<int:id>''' Method = GET, PUT
+
+curl -X PUT http://localhost:5000/api/v1/resources/votes/upvote/1
+
+Increases the score of a post
+
+### Vote down a post
+
+```/api/v1/resources/votes/upvote/<int:id>''' Method = GET, PUT
+
+curl -X PUT http://localhost:5000/api/v1/resources/votes/upvote/2
+
+Reduces the score of a post
+
+### Retrieve the total number of votes for a post with a specific ID
+
+```/api/v1/resources/votes/<int:d> Method = GET
+
+### List the n top scoring posts to any community
+
+```/api/v1/resources/votes/top/<int:top_n>``` Method = GET
+
+### Return the list sorted by score Method = GET, POST
+
+```/api/v1/resources/votes/highscore Method = GET, POST
+
+

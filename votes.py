@@ -26,34 +26,22 @@ def retrieve_all_votes():
     return list(queries.all_votes())
 
 # Vote up a post
-@app.route('/api/v1/resources/votes/upvote', methods=['GET', 'POST'])
-def upvote_main():
+@app.route('/api/v1/resources/votes/upvote/<int:id>', methods=['GET', 'PUT'])
+def upvote(id):
     if request.method == 'GET':
-        return filter_votes(request.args)
-    elif request.method == 'POST':
-        return up_vote(request.data)
-
-def up_vote_a_post(vote):
-    required_fields = ['id']
-    if not all([field in vote for field in required_fields]):
-        raise exceptions.ParseError()
-    vote_update = queries.up_vote(**vote)
-    return filter_votes(vote), status.HTTP_200_OK
+        return list(queries.all_votes()), status.HTTP_200_OK
+    else:
+        queries.up_vote(id=id)
+        return list(queries.all_votes()), status.HTTP_200_OK
 
 # Vote down a post
-@app.route('/api/v1/resources/votes/downvote', methods=['GET', 'POST'])
-def downvote_main():
+@app.route('/api/v1/resources/votes/downvote/<int:id>', methods=['GET', 'PUT'])
+def downvote(id):
     if request.method == 'GET':
-        return filter_votes(request.args)
-    elif request.method == 'POST':
-        return down_vote(request.data)
-
-def down_vote_a_post(vote):
-    required_fields = ['id']
-    if not all([field in vote for field in required_fields]):
-        raise exceptions.ParseError()
-    down_vote_update = queries.down_vote(**vote)
-    return filter_votes(vote), status.HTTP_200_OK
+        return list(queries.all_votes()), status.HTTP_200_OK
+    else:
+        queries.down_vote(id=id)
+        return list(queries.all_votes()), status.HTTP_200_OK
 
 # Retrieve the total number of votes for a post with a specific ID
 @app.route('/api/v1/resources/votes/<int:id>', methods=['GET'])
@@ -76,12 +64,21 @@ def top_scoring_posts(top_n):
 # Return the list sorted by score
 @app.route('/api/v1/resources/votes/highscore', methods=['GET', 'POST'])
 def sorted_by_score():
-    id = request.json['id']
-    sorted_list = queries.sorted_by_score(id=id)
-    if sorted_list:
-        return list(sorted_list)
+    method = request.method
+
+    if method == 'GET':
+        return list(queries.sorted_by_score())
+    elif method == 'POST':
+        return sorted_list(request.data)
     else:
-       return { 'message': 'Error 404 Resource Not Found' }, status.HTTP_404_NOT_FOUND
+        return {'message': f'Error 400 Bad Request'}, status.HTTP_400_BAD_REQUEST
+
+def sorted_list(post_id):
+    sort = queries.sorted_by_score_id(id=post_id[0])
+    if sort:
+        return list(sort), status.HTTP_200_OK
+    else:
+        return {'message': f'Error 400 Bad Request'}, status.HTTP_400_BAD_REQUEST
 
 # Helper function from example
 def filter_votes(query_parameters):

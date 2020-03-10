@@ -1,4 +1,3 @@
 -- :name sorted_by_score :many
-SELECT * FROM votes
-WHERE id in :id
+SELECT * FROM posts
 ORDER BY up_votes - down_votes DESC;
