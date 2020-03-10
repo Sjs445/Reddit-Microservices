@@ -14,17 +14,9 @@
     "user": "username",
     "sub": "sub community",
     "url": "www.example.com",
-    "posted_time": "YYY-MM-DD HH:MM:SS"
-]
-```
-
-### Votes in Json Format
-
-```json
-[
-    "id": "Number",
-    "up_votes": "Number",
+    "up_votes": "Number"
     "down_votes": "Number"
+    "posted_time": "YYY-MM-DD HH:MM:SS"
 ]
 ```
 ## Homepage
