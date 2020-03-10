@@ -97,7 +97,7 @@ Increases the score of a post
 
 ### Vote down a post
 
-```/api/v1/resources/votes/upvote/<int:id>''' Method = GET, PUT
+```/api/v1/resources/votes/upvote/<int:id>``` Method = GET, PUT
 
 curl -X PUT http://localhost:5000/api/v1/resources/votes/downvote/2
 
@@ -105,7 +105,7 @@ Reduces the score of a post
 
 ### Retrieve the total number of votes for a post with a specific ID
 
-```/api/v1/resources/votes/<int:d> Method = GET
+```/api/v1/resources/votes/<int:d>``` Method = GET
 
 ### List the n top scoring posts to any community
 
