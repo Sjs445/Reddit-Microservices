@@ -44,8 +44,9 @@ def post(id):
         else:
             raise exceptions.NotFound()
     elif request.method == 'DELETE':
-        post = queries.delete_post_by_id(id=id)
-        if(post):
+        post = queries.delete_post_by_id(id=id) # Delete the post in the database
+        votes = queries.delete_votes_by_id(id=id)   # We should delete the votes as well
+        if(post and votes):
             return {'message': f'Post {id} deleted successfully'}, status.HTTP_200_OK
         else:
             raise exceptions.NotFound()
