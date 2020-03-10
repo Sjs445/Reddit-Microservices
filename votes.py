@@ -26,26 +26,34 @@ def retrieve_all_votes():
     return list(queries.all_votes())
 
 # Vote up a post
-@app.route('/api/v1/resources/votes/upvote/<int:id>', methods=['GET', 'POST'])
-def vote_up(id):
-    post = queries.post_by_id(id=id)
+@app.route('/api/v1/resources/votes/upvote', methods=['GET', 'POST'])
+def upvote_main():
+    if request.method == 'GET':
+        return filter_votes(request.args)
+    elif request.method == 'POST':
+        return up_vote(request.data)
 
-    if post:
-        queries.up_vote(post=id)
-        return { 'message': f' {id} upvoted successfully'}, status.HTTP_200_OK
-    else:
-        return { 'message': f' Error 404 post {id} not found'}, status.HTTP_404_NOT_FOUND
+def up_vote_a_post(vote):
+    required_fields = ['id']
+    if not all([field in vote for field in required_fields]):
+        raise exceptions.ParseError()
+    vote_update = queries.up_vote(**vote)
+    return filter_votes(vote), status.HTTP_200_OK
 
 # Vote down a post
-@app.route('/api/v1/resources/votes/downvote/<int:id>', methods=['GET', 'POST'])
-def vote_down(id):
-    post = queries.post_by_id(id=id)
+@app.route('/api/v1/resources/votes/downvote', methods=['GET', 'POST'])
+def downvote_main():
+    if request.method == 'GET':
+        return filter_votes(request.args)
+    elif request.method == 'POST':
+        return down_vote(request.data)
 
-    if post:
-        queries.down_vote(post=id)
-        return { 'message': f' {id} voted down successfully'}, status.HTTP_200_OK
-    else:
-        return {'message': f'Error 404 post {id} not found'}, status.HTTP_404_NOT_FOUND
+def down_vote_a_post(vote):
+    required_fields = ['id']
+    if not all([field in vote for field in required_fields]):
+        raise exceptions.ParseError()
+    down_vote_update = queries.down_vote(**vote)
+    return filter_votes(vote), status.HTTP_200_OK
 
 # Retrieve the total number of votes for a post with a specific ID
 @app.route('/api/v1/resources/votes/<int:id>', methods=['GET'])
@@ -58,7 +66,7 @@ def report_number_of_votes(id):
 
 # List the n top scoring posts to any community
 @app.route('/api/v1/resources/votes/top/<int:top_n>', methods=['GET'])
-def top_n_score(top_n):
+def top_scoring_posts(top_n):
     top = queries.top_n(top_n = top_n)
     if top:
         return list(top)
@@ -68,17 +76,25 @@ def top_n_score(top_n):
 # Return the list sorted by score
 @app.route('/api/v1/resources/votes/highscore', methods=['GET', 'POST'])
 def sorted_by_score():
-    idList = request.json['id']
-    sorted_list = queries.sorted_by_score(idList=idList)
+    id = request.json['id']
+    sorted_list = queries.sorted_by_score(id=id)
     if sorted_list:
         return list(sorted_list)
     else:
        return { 'message': 'Error 404 Resource Not Found' }, status.HTTP_404_NOT_FOUND
-'''
-def sorted_by_score(id):
-    sorted = queries.sorted_by_score()
-    if sorted:
-        return list(sorted)
-    else:
-        return {'message': f'Error 404 Resource Not Found'}, status.HTTP_404_NOT_FOUND
-'''
+
+# Helper function from example
+def filter_votes(query_parameters):
+    id = query_parameters.get('id')
+    query = "SELECT * FROM votes WHERE"
+    to_filter = []
+
+    if id:
+        query += ' id=? AND'
+        to_filter.append(id)
+    if not (id):
+        raise exceptions.NotFound()
+
+    query = query[:-4] + ';'
+    results = queries._engine.execute(query, to_filter).fetchall()
+    return list(map(dict, results))
