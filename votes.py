@@ -20,6 +20,12 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
+# Homepage
+@app.route('/', methods=['GET'])
+def home():
+    return '''<h1>The New Reddit</h1>
+<p>Welcome to the new reddit for votes...</p>'''
+
 # Retrieve all votes
 @app.route('/api/v1/resources/votes/all', methods=['GET'])
 def retrieve_all_votes():

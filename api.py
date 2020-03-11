@@ -26,7 +26,7 @@ def init_db():
 @app.route('/', methods=['GET'])
 def home():
     return '''<h1>The New Reddit</h1>
-<p>Welcome to the new reddit...</p>'''
+<p>Welcome to the new reddit for posts...</p>'''
 
 # Get all posts
 @app.route('/api/v1/resources/posts/all', methods=['GET'])
