@@ -11,10 +11,8 @@
     sudo apt-get install curl
     curl https://getcaddy.com | bash -s personal
 
-
 #### To run the server please run the following command in terminal:
     sh foreman.sh
-
 
 #### Initialize the database before calling ```flask run``` with ```flask init```
 
