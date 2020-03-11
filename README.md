@@ -7,6 +7,10 @@
     pip3 install flask_api
     pip3 install python-dotenv
     sudo gem install foreman
+    sudo apt install --yes gunicorn3
+    sudo apt-get install curl
+    curl https://getcaddy.com | bash -s personal
+
 
 #### To run the server please run the following command in terminal:
     sh foreman.sh
