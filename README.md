@@ -2,6 +2,16 @@
 
 ## Shane Spangenberg, Brendon Linthurst, Collin Campbell
 
+#### To run the server please be sure to run the following scripts in the terminal:
+    pip3 install pugsql
+    pip3 install flask_api
+    pip3 install python-dotenv
+    sudo gem install foreman
+
+#### To run the server please run the following command in terminal:
+    sh foreman.sh
+
+
 #### Initialize the database before calling ```flask run``` with ```flask init```
 
 ### Posts in Json Format
