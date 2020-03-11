@@ -1,8 +1,8 @@
 # CPSC 449 Reddit-Microservices
 
-## Shane Spangenberg, Brendon Linthurst, Collin Campbell
+## Shane Spangenberg: Dev-Posts, Brendon Linthurst: Dev-Votes, Collin Campbell: Dev-Ops
 
-#### To run the server please be sure to run the following scripts in the terminal:
+#### Before running the server, please be sure to run the following scripts in the terminal:
     pip3 install pugsql
     pip3 install flask_api
     pip3 install python-dotenv
